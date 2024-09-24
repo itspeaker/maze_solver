@@ -23,33 +23,29 @@ class Cell:
         if self._win is None:
             return
 
+        right_wall = Line(Point(self._x2, self._y1), Point(self._x2, self._y2))
         if self.has_right_wall:
-            line = Line(Point(self._x2, self._y1), Point(self._x2, self._y2))
-            self._win.draw_line(line, fill_color="white")
+            self._win.draw_line(right_wall, fill_color="white")
         else:
-            line = Line(Point(self._x2, self._y1), Point(self._x2, self._y2))
-            self._win.draw_line(line, fill_color="black")
+            self._win.draw_line(right_wall, fill_color="black")
 
+        left_wall = Line(Point(self._x1, self._y1), Point(self._x1, self._y2))
         if self.has_left_wall:
-            line = Line(Point(self._x1, self._y1), Point(self._x1, self._y2))
-            self._win.draw_line(line, fill_color="white")
+            self._win.draw_line(left_wall, fill_color="white")
         else:
-            line = Line(Point(self._x1, self._y1), Point(self._x1, self._y2))
-            self._win.draw_line(line, fill_color="black")
+            self._win.draw_line(left_wall, fill_color="black")
 
+        top_wall = Line(Point(self._x1, self._y1), Point(self._x2, self._y1))
         if self.has_top_wall:
-            line = Line(Point(self._x1, self._y1), Point(self._x2, self._y1))
-            self._win.draw_line(line, fill_color="white")
+            self._win.draw_line(top_wall, fill_color="white")
         else:
-            line = Line(Point(self._x1, self._y1), Point(self._x2, self._y1))
-            self._win.draw_line(line, fill_color="black")
+            self._win.draw_line(top_wall, fill_color="black")
 
+        bottom_wall = Line(Point(self._x1, self._y2), Point(self._x2, self._y2))
         if self.has_bottom_wall:
-            line = Line(Point(self._x1, self._y2), Point(self._x2, self._y2))
-            self._win.draw_line(line, fill_color="white")
+            self._win.draw_line(bottom_wall, fill_color="white")
         else:
-            line = Line(Point(self._x1, self._y2), Point(self._x2, self._y2))
-            self._win.draw_line(line, fill_color="black")
+            self._win.draw_line(bottom_wall, fill_color="black")
 
     def draw_move(self, to_cell, undo=False):
         color = "grey"

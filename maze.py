@@ -1,4 +1,4 @@
-import random 
+import random
 import time
 from cell import Cell
 from graphics import Window
@@ -14,7 +14,7 @@ class Maze:
         cell_size_x,
         cell_size_y,
         win: Window | None = None,
-        seed : int| None = None
+        seed: int | None = None,
     ) -> None:
         self._x1 = x1
         self._y1 = y1
@@ -28,7 +28,8 @@ class Maze:
         self._cells: list[list[Cell]] = []
         self._create_cells()
         self._break_entrance_and_exit()
-        self._break_walls_r(1,0)
+        self._break_walls_r(0, 0)
+        self._reset_cells_visited()
 
     def _create_cells(self):
         for _ in range(self._num_cols):
@@ -51,9 +52,9 @@ class Maze:
 
     def _animate(self):
         if self._win is None:
-            return 
+            return
         self._win.redraw()
-        time.sleep(0.5)
+        time.sleep(0.05)
 
     def _break_entrance_and_exit(self):
         self._cells[0][0].has_top_wall = False
@@ -66,37 +67,42 @@ class Maze:
         c.visited = True
         while True:
             to_visit = []
-            if j-1 >= 0 and not self._cells[i][j-1].visited:
-                to_visit.append((i, j-1))
-            if i+1 <= len(self._cells) - 1 and not self._cells[i+1][j].visited:
-                to_visit.append((i+1,j))
-            if j+1 <= len(self._cells[0])-1 and not self._cells[i][j+1].visited:
-                to_visit.append((i,j+1))
-            if i-1 >= 0 and not self._cells[i-1][j].visited:
-                to_visit.append((i-1,j))
+            if j - 1 >= 0 and not self._cells[i][j - 1].visited:
+                to_visit.append((i, j - 1))
+            if i + 1 <= len(self._cells) - 1 and not self._cells[i + 1][j].visited:
+                to_visit.append((i + 1, j))
+            if j + 1 <= len(self._cells[0]) - 1 and not self._cells[i][j + 1].visited:
+                to_visit.append((i, j + 1))
+            if i - 1 >= 0 and not self._cells[i - 1][j].visited:
+                to_visit.append((i - 1, j))
 
             if len(to_visit) == 0:
                 self._draw_cell(i, j)
                 return
-            
-            rand_index = random.randint(0,len(to_visit)-1)
-            i_next, j_next = to_visit[rand_index]                
+
+            rand_index = random.randint(0, len(to_visit) - 1)
+            i_next, j_next = to_visit[rand_index]
             c_next: Cell = self._cells[i_next][j_next]
 
             if i < i_next:
                 c.has_right_wall = False
                 c_next.has_left_wall = False
-            
+
             if i > i_next:
                 c.has_left_wall = False
                 c_next.has_right_wall = False
-            
+
             if j < j_next:
                 c.has_bottom_wall = False
                 c_next.has_top_wall = False
-            
+
             if j > j_next:
                 c.has_top_wall = False
                 c_next.has_bottom_wall = False
-            
+
             self._break_walls_r(i_next, j_next)
+
+    def _reset_cells_visited(self):
+        for col in self._cells:
+            for cell in col:
+                cell.visited = False
