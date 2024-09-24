@@ -48,17 +48,18 @@ class Cell:
             self._win.draw_line(bottom_wall, fill_color="black")
 
     def draw_move(self, to_cell, undo=False):
-        color = "grey"
+        color = "red"
         if not undo:
-            color = "red"
+            color = "green"
 
-        half_cell = abs(self._x2 - self._x1) // 2
-        x_center = half_cell + self._x1
-        y_center = half_cell + self._y1
+        half_cell_x = abs(self._x2 - self._x1) // 2
+        half_cell_y = abs(self._y1 - self._y2) // 2
 
-        half_cell2 = abs(to_cell._x2 - to_cell._x1) // 2
-        x_center2 = half_cell2 + to_cell._x1
-        y_center2 = half_cell2 + to_cell._y1
+        x_center = half_cell_x + self._x1
+        y_center = half_cell_y + self._y1
+
+        x_center2 = half_cell_x + to_cell._x1
+        y_center2 = half_cell_y + to_cell._y1
 
         line = Line(Point(x_center, y_center), Point(x_center2, y_center2))
         self._win.draw_line(line, color)
